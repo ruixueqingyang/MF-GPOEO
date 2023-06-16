@@ -1,2 +1,7 @@
 # MF-GPOEO
-a none-intrusive Model-Free GPU Online Energy Optimization (GPOEO) framework
+
+./src is the source code of our work.
+./DEPO is our implementation of DEPO.
+./PerformanceMeasurement is our tool to measure GPU power, energy, SM frequency, memory frequency, execution time, etc.
+
+We will complete the README document soon.
