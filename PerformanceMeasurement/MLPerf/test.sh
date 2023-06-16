@@ -13,7 +13,6 @@ TuneType="SM_RANGE"
 SampleInterval="100"
 PowerThreshold="1.65"
 PMFlagBase="-e -i "${GPUIndex}" -s "${SampleInterval}" -t "${PowerThreshold}" -m DAEMON -trace"
-# -e -i 1 -s 100 -t 1.65 -m DAEMON
 
 SleepInterval="15"
 

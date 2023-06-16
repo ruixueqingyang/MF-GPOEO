@@ -41,8 +41,6 @@ Creation Date: 20220615
 extern "C" {
 #endif
 
-// MAcros
-
 // 输出文件路径
 #define OUT_PATH "./MFGPOEO_out.txt"
 

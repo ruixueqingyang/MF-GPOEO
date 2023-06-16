@@ -18,8 +18,7 @@ CUDA_LIB = $(CUDA_DIR)/lib64
 CUDA_STUBS = $(CUDA_DIR)/lib64/stubs
 
 CC = nvcc # g++
-# CFLAGS = -Wall -g -O0 -Wno-unused-parameter
-CFLAGS = -std=c++11 # -Wall -O3 -Wno-unused-parameter
+CFLAGS = -std=c++11 -O3 -Wno-unused-parameter
 SPECIALFLAGS = -lnvidia-ml -lpthread
 RPATH = -Wl,-rpath=${CXX_LIB_DIR}
 

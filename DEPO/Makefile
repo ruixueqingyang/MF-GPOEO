@@ -24,15 +24,15 @@ CUPTI_INC = $(CUDA_DIR)/extras/CUPTI/include
 
 CC = g++
 NVCC = $(CUDA_DIR)/bin/nvcc
-DEBUG_FLAGS = -O3 # -g -O0
+DEBUG_FLAGS = -O3
 CFLAGS = ${DEBUG_FLAGS} -D SUPPORT_SET_MEMORY_CLOCK # 如果软硬件平台支持调整显存频率则定义宏
 PIC_FLAG = -Xcompiler -fPIC
-NVIDIA_LIBS = -L${CUDA_LIB} -L${CUPTI_LIB} -L${CUDA_STUBS} -lcudart -lpthread -lcupti -lnvidia-ml # -lcuda -lnvperf_target -lnvperf_host
+NVIDIA_LIBS = -L${CUDA_LIB} -L${CUPTI_LIB} -L${CUDA_STUBS} -lcudart -lpthread -lcupti -lnvidia-ml
 RPATH = -Wl,-rpath=${CXX_LIB_DIR}
 
 SRC_DIR = .
 INCS = -I${SRC_DIR} -I$(CUDA_INC) -I${CUPTI_INC}
-SRC = DEPO.cpp measure.cpp global_var.cpp Msg2EPRT.cpp # analysis.cpp kernel_data.cpp is_stable.cpp Msg2EPRT.cpp
+SRC = DEPO.cpp measure.cpp global_var.cpp Msg2EPRT.cpp
 OBJ = $(SRC:.cpp=.o)
 TARGET = libDEPO.so
 
