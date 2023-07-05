@@ -45,11 +45,7 @@ void *EvaluatePerformance(void *arg)
     DEPOOutStream << "EvaluatePerformance: TestedPwrLmt: " << std::dec << TestedPwrLmt << std::endl;
     std::cout << "EvaluatePerformance: TestedPwrLmt: " << std::dec << TestedPwrLmt << std::endl;
 
-    // sleep(2);
-    // sleep(8);
     sleep(16);
-    // sleep(24); // 延时一段时间 避开一开始的不稳定阶段
-    // sleep(50);
 
     // 启动测量
     // One subscriber is used to register multiple callback domains
