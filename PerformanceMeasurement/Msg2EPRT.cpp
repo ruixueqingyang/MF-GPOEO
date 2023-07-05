@@ -12,12 +12,6 @@ Creation Date: 20200704
 
 int SendUDPMessage(std::string Msg);
 
-// int SetSMClkRange(float LowerPercent, float UpperPercent){
-//     std::string Msg = "SM_RANGE: ";
-//     Msg = Msg + std::to_string(LowerPercent) + ", " + std::to_string(UpperPercent);
-//     return SendUDPMessage(Msg);
-// }
-
 int ResetSMClk(){
     std::string Msg = "RESET_SM_CLOCK";
     return SendUDPMessage(Msg);
@@ -39,10 +33,6 @@ int StopMeasurement(){
 
 int ExitMeasurement(){
     return SendUDPMessage("EXIT");
-}
-
-int ResetMeasurement(){
-    return SendUDPMessage("RESET");
 }
 
 int ResetMeasurement(std::string& OutPath){

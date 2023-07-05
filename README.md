@@ -23,13 +23,16 @@ Get the dynamic library (`libGPOEO.so`) of our work.
 
 ### Using
 ```shell
-export CUDA_INJECTION64_PATH=<full_path>/libGPOEO.so # set the environment variable of libGPOEO.so
-export MFGPOEO_CONFIG_PATH=<full_path>/Src/RTX3080Ti.ini # set the environment variable of configuration file
-export MFGPOEO_OUTPUT_PATH=<full_path>/log.txt # set the environment variable of log file
-export MFGPOEO_WORK_MODE=PID # set the environment variable of work mode
-sudo <full_path>/GPU_Application.bin # run a GPU application (running for a period of time, such as 10 minutes)
-```
+# set environment variables
+export CUDA_INJECTION64_PATH=<full_path>/libGPOEO.so # the path to libGPOEO.so
+export MFGPOEO_CONFIG_PATH=<full_path>/Src/RTX3080Ti.ini # the path to the configuration file
+export MFGPOEO_OUTPUT_PATH=<full_path>/log.txt # the path to the log file
+export MFGPOEO_WORK_MODE=PID # the work mode
 
+# run a GPU application (running for a period of time, such as 10 minutes)
+sudo <full_path>/GPU_Application.bin
+```
+The `test_MF-GPOEO.sh` is an example.
 
 ## Compile and use DEPO (our implementation)
 
@@ -44,13 +47,16 @@ Get the dynamic library (`libDEPO.so`) of DEPO.
 
 ### Using
 ```shell
-export CUDA_INJECTION64_PATH=<full_path>/libDEPO.so # set the environment variable of libDEPO.so
-export DEPO_CONFIG_PATH=<full_path>/DEPO/RTX3080Ti.ini # set the environment variable of configuration file
-export DEPO_OUTPUT_PATH=<full_path>/log.txt # set the environment variable of log file
-export DEPO_WORK_MODE=DEPO # set the environment variable of work mode
-sudo <full_path>/GPU_Application.bin # run a GPU application (running for a period of time, such as 10 minutes)
-```
+# set environment variables
+export CUDA_INJECTION64_PATH=<full_path>/libDEPO.so # the path to libDEPO.so
+export DEPO_CONFIG_PATH=<full_path>/DEPO/RTX3080Ti.ini # the path to the configuration file
+export DEPO_OUTPUT_PATH=<full_path>/log.txt # the path to the log file
+export DEPO_WORK_MODE=DEPO # the work mode
 
+# run a GPU application (running for a period of time, such as 10 minutes)
+sudo <full_path>/GPU_Application.bin
+```
+The `test_DEPO.sh` is an example.
 
 
 ## Compile and use PerformanceMeasurement

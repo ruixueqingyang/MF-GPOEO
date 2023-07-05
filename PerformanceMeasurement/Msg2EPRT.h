@@ -39,13 +39,11 @@ Creation Date: 20200704
 #define BUFF_LEN 128
 #define SERVER_PORT 7777
 
-// int SetSMClkRange(float LowerPercent, float UpperPercent);
 int ResetSMClk();
 int TimeStamp(std::string& Description);
 int StartMeasurement();
 int StopMeasurement();
 int ExitMeasurement();
-int ResetMeasurement();
 int ResetMeasurement(std::string& OutPath);
 
 #endif
