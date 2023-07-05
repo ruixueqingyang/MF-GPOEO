@@ -9,3 +9,51 @@ The corresponding paper has been already in submission.
 ./PerformanceMeasurement is our tool to measure GPU power, energy, SM frequency, memory frequency, execution time, etc.
 
 We will complete the README document soon.
+
+## Compile and use our work
+
+### Compiling
+cd ./Src
+
+Set the CUDA installation path in Makefile.
+
+make -j8
+
+Get the dynamic library (libGPOEO.so) of our work.
+
+### Using
+export CUDA_INJECTION64_PATH=<full_path>/libGPOEO.so # set environment variable of libGPOEO.so
+
+<full_path>/GPU_Application.bin # run a GPU application (running for a period of time, such as 10 minutes)
+
+
+
+## Compile and use DEPO (our implementation)
+
+### Compiling
+cd ./DEPO
+
+Set the CUDA installation path in Makefile.
+
+make -j8
+
+Get the dynamic library (libDEPO.so) of DEPO.
+
+### Using
+export CUDA_INJECTION64_PATH=<full_path>/libGPOEO.so # set environment variable of libGPOEO.so
+
+<full_path>/GPU_Application.bin # run a GPU application (running for a period of time, such as 10 minutes)
+
+## Compile and use PerformanceMeasurement
+
+### Compiling
+cd ./PerformanceMeasurement
+
+Set the CUDA installation path in Makefile.
+
+make -j8
+
+Get the measurement tool (PerfMeasure.bin).
+
+### Using
+The test.sh is an example.
