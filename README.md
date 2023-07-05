@@ -2,13 +2,13 @@
 
 **The corresponding paper has been already in submission.**
 
-./src is the source code of our work.
+./Src is the source code of our work.
 
 ./DEPO is our implementation of DEPO. The source code of **DEPO for GPU** was still **unavailable** online when our paper was submitted. (2023/06/16 13:12 UTC, https://projects.task.gda.pl/akrz/split)
 
 ./PerformanceMeasurement is our tool to measure GPU power, energy, SM frequency, memory frequency, execution time, etc.
 
-We will complete the README document soon.
+
 
 ## Compile and use our work
 
@@ -43,6 +43,8 @@ Get the dynamic library (libDEPO.so) of DEPO.
 export CUDA_INJECTION64_PATH=<full_path>/libGPOEO.so # set environment variable of libGPOEO.so
 
 <full_path>/GPU_Application.bin # run a GPU application (running for a period of time, such as 10 minutes)
+
+
 
 ## Compile and use PerformanceMeasurement
 
