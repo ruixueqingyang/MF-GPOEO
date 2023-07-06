@@ -82,7 +82,6 @@ void show(){
     std::cout << "GlobalConfig.MeasureWindowDuration = " << GlobalConfig.MeasureWindowDuration << std::endl;
     std::cout << "GlobalConfig.WindowDurationMin = " << GlobalConfig.WindowDurationMin << std::endl;
     std::cout << "GlobalConfig.WindowDurationMax = " << GlobalConfig.WindowDurationMax << std::endl;
-    std::cout << "GlobalConfig.Pct_Inc = " << GlobalConfig.Pct_Inc << std::endl;
     std::cout << "GlobalConfig.Pct_Ctrl = " << GlobalConfig.Pct_Ctrl << std::endl;
     std::cout << "GlobalConfig.BaseUpdateCycle = " << GlobalConfig.BaseUpdateCycle << std::endl;
     std::cout << "GlobalConfig.NumOptConfig = " << GlobalConfig.NumOptConfig << std::endl;
@@ -239,9 +238,6 @@ void globalInit(void) {
         }
         else if(key=="Maximum Measurement Duration"){
                 GlobalConfig.WindowDurationMax=atof(value.c_str());
-        }
-        else if(key=="Duration Increase Threshold"){
-                GlobalConfig.Pct_Inc=atof(value.c_str());
         }
         else if(key=="Optimization Execution Threshold"){
                 GlobalConfig.Pct_Ctrl=atof(value.c_str());
@@ -1281,7 +1277,6 @@ void *AdaptiveWindowEnergyOptimization(void *arg)
     // 初始化: 
     float MeasureWindowDuration = GlobalConfig.MeasureWindowDuration; // 测量窗口长度 (s)
     float prevMeasureWindowDuration = MeasureWindowDuration; // 上次 测量窗口长度 (s)
-    float Pct_Inc = GlobalConfig.Pct_Inc; // < Pct_Inc 时 尝试增大窗口长度
     float Pct_Ctrl = GlobalConfig.Pct_Ctrl; // > Pct_Ctrl 时 进行 PID 控制, 更新最优能耗配置
     int BaseUpdateCycle = 2; // 基准更新频次
     // int BaseUpdateCycle = GlobalConfig.BaseUpdateCycle; // 基准更新频次
@@ -1392,7 +1387,7 @@ void *AdaptiveWindowEnergyOptimization(void *arg)
         prevMatchedExeTimePct = MatchedExeTimePct;
 
         prevMeasureWindowDuration = MeasureWindowDuration;
-        if (CoveredExeTimePct < Pct_Inc || MatchedExeTimePct < Pct_Ctrl // 当覆盖度 或 匹配度都不足时, 增大测量区间时长
+        if (CoveredExeTimePct < Pct_Ctrl || MatchedExeTimePct < Pct_Ctrl // 当覆盖度 或 匹配度都不足时, 增大测量区间时长
             || std::abs(PerfIndex) > 0.04 // 当性能指标不为 0 时增大测量区间时长
             || std::abs(ExeIndex) > 0.08 || std::abs(GapIndex) > 0.25
             || (BaseData.avgGPUUtil > 70 && BaseData.avgMemUtil > 50 && std::abs(GapIndex) > 0.05)
@@ -1433,7 +1428,7 @@ void *AdaptiveWindowEnergyOptimization(void *arg)
     } while (!GlobalConfig.terminateThread 
         && global_measure_count < 5
         && (
-        (CoveredExeTimePct < Pct_Inc || MatchedExeTimePct < Pct_Ctrl)
+        (CoveredExeTimePct < Pct_Ctrl || MatchedExeTimePct < Pct_Ctrl)
         || std::abs(PerfIndex) > 0.04 // 0.015 // 默认配置下性能损失指标接近 0%, 才停止数据库初始化
         || std::abs(ExeIndex) > 0.08 || std::abs(GapIndex) > 0.15
         // || global_measure_count < 2
@@ -1535,7 +1530,7 @@ void *AdaptiveWindowEnergyOptimization(void *arg)
 
         // 通过 衰减系数 来控制数据库更新
         if ((ctrl_count != 0 && ctrl_count%BaseUpdateCycle == 0)
-            || CoveredExeTimePct < Pct_Inc 
+            || CoveredExeTimePct < Pct_Ctrl 
             || MatchedExeTimePct < Pct_Ctrl 
             || UnMatchedStreamExeTimePct > 0.1
             || base_data_updated == false
@@ -1856,7 +1851,6 @@ void *PredictPerformance(void *arg)
     // float MeasureWindowDuration = 4.0;
     float MeasureWindowDuration = GlobalConfig.MeasureWindowDuration; // 测量窗口长度 (s)
     float prevMeasureWindowDuration = MeasureWindowDuration; // 上次 测量窗口长度 (s)
-    float Pct_Inc = GlobalConfig.Pct_Inc; // < Pct_Inc 时 尝试增大窗口长度
     float Pct_Ctrl = GlobalConfig.Pct_Ctrl; // > Pct_Ctrl 时 进行 PID 控制, 更新最优能耗配置
     int BaseUpdateCycle = 2; // 基准更新频次
     // int BaseUpdateCycle = GlobalConfig.BaseUpdateCycle; // 基准更新频次
@@ -1968,7 +1962,7 @@ void *PredictPerformance(void *arg)
         CHECK_TERMINATION_BREAK;
 
         prevMeasureWindowDuration = MeasureWindowDuration;
-        if (CoveredExeTimePct < Pct_Inc || MatchedExeTimePct < Pct_Ctrl // 当覆盖度 或 匹配度都不足时, 增大测量区间时长
+        if (CoveredExeTimePct < Pct_Ctrl || MatchedExeTimePct < Pct_Ctrl // 当覆盖度 或 匹配度都不足时, 增大测量区间时长
             || std::abs(PerfIndex) > 0.04 // 当性能指标不为 0 时增大测量区间时长
             || std::abs(ExeIndex) > 0.08 || std::abs(GapIndex) > 0.25
             || (BaseData.avgGPUUtil > 70 && BaseData.avgMemUtil > 50 && std::abs(GapIndex) > 0.05)
@@ -2009,7 +2003,7 @@ void *PredictPerformance(void *arg)
     } while (!GlobalConfig.terminateThread 
         && global_measure_count < 5
         && (
-        (CoveredExeTimePct < Pct_Inc || MatchedExeTimePct < Pct_Ctrl)
+        (CoveredExeTimePct < Pct_Ctrl || MatchedExeTimePct < Pct_Ctrl)
         || std::abs(PerfIndex) > 0.04 // 0.015 // 默认配置下性能损失指标接近 0%, 才停止数据库初始化
         || std::abs(ExeIndex) > 0.08 || std::abs(GapIndex) > 0.15
         // || global_measure_count < 2
@@ -2063,7 +2057,7 @@ void *PredictPerformance(void *arg)
         // if (predict_count != 0 && predict_count % BaseUpdateCycle == 0) {
         // if (predict_count != 0) {
         if ((predict_count != 0 && predict_count%BaseUpdateCycle == 0)
-            || CoveredExeTimePct < Pct_Inc 
+            || CoveredExeTimePct < Pct_Ctrl 
             || MatchedExeTimePct < Pct_Ctrl 
             || UnMatchedStreamExeTimePct > 0.1
         ) {
