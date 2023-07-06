@@ -4,9 +4,9 @@
 
 `./Src` is the source code of our work.
 
-`./DEPO` is our implementation of DEPO. The source code of **DEPO for GPU** was still **unavailable** online when our paper was submitted. (2023/06/16 13:12 UTC, https://projects.task.gda.pl/akrz/split)
+`./DEPO` is our implementation of DEPO. The source code of **DEPO** was still **unavailable** online when our paper was submitted. (2023/06/16 13:12 UTC, https://projects.task.gda.pl/akrz/split)
 
-`./PerformanceMeasurement` is our tool to measure GPU power, energy, SM frequency, memory frequency, execution time, etc.
+`./PerformanceMeasurement` is our tool to measure GPU power, GPU energy, GPU SM frequency, GPU memory frequency, execution time, CPU power, CPU energy, etc.
 
 
 
