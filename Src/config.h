@@ -84,7 +84,7 @@ public:
     float StrangePerfThreshold; // 异常性能指标阈值, 限制过小的性能损失
 
     float MeasureWindowDuration, WindowDurationMin, WindowDurationMax; // 测量窗口长度 及 上下限 (s)
-    float Pct_Ctrl; // > Pct_Ctrl 时 进行 PID 控制, 更新最优能耗配置
+    float Th_cover; // > Th_cover 时 进行 PID 控制, 更新最优能耗配置
     float discount; // 融合 Base 历史数据 时的 衰减系数
     float GapDiscount; // 计算性能指标 且 Gap部分匹配不好时 Gap 的衰减系数
     float GapDiscountOrigin; // 计算性能指标 且 Gap部分匹配不好时 Gap 的衰减系数
@@ -139,7 +139,7 @@ public:
         MeasureWindowDuration = 2.0;
         WindowDurationMin = 1.0;
         WindowDurationMax = 20.0;
-        Pct_Ctrl = 0.75; // > Pct_Ctrl 时 进行 PID 控制, 更新最优能耗配置
+        Th_cover = 0.75; // > Th_cover 时 进行 PID 控制, 更新最优能耗配置
         discount = 0.7; // 融合 Base 历史数据 时的 衰减系数
         GapDiscount = 0.65; // 计算性能指标 且 Gap部分匹配不好时 Gap 的衰减系数
         GapDiscountOrigin = 0.65; // 计算性能指标 且 Gap部分匹配不好时 Gap 的衰减系数

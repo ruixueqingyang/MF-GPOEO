@@ -82,7 +82,7 @@ void show(){
     std::cout << "GlobalConfig.MeasureWindowDuration = " << GlobalConfig.MeasureWindowDuration << std::endl;
     std::cout << "GlobalConfig.WindowDurationMin = " << GlobalConfig.WindowDurationMin << std::endl;
     std::cout << "GlobalConfig.WindowDurationMax = " << GlobalConfig.WindowDurationMax << std::endl;
-    std::cout << "GlobalConfig.Pct_Ctrl = " << GlobalConfig.Pct_Ctrl << std::endl;
+    std::cout << "GlobalConfig.Th_cover = " << GlobalConfig.Th_cover << std::endl;
     std::cout << "GlobalConfig.BaseUpdateCycle = " << GlobalConfig.BaseUpdateCycle << std::endl;
     std::cout << "GlobalConfig.NumOptConfig = " << GlobalConfig.NumOptConfig << std::endl;
     std::cout << "GlobalConfig.StableSMClkStepRange = " << GlobalConfig.StableSMClkStepRange << std::endl;
@@ -240,7 +240,7 @@ void globalInit(void) {
                 GlobalConfig.WindowDurationMax=atof(value.c_str());
         }
         else if(key=="Optimization Execution Threshold"){
-                GlobalConfig.Pct_Ctrl=atof(value.c_str());
+                GlobalConfig.Th_cover=atof(value.c_str());
         }
         else if(key=="Baseline Update Frequency")
         {
@@ -1277,7 +1277,7 @@ void *AdaptiveWindowEnergyOptimization(void *arg)
     // 初始化: 
     float MeasureWindowDuration = GlobalConfig.MeasureWindowDuration; // 测量窗口长度 (s)
     float prevMeasureWindowDuration = MeasureWindowDuration; // 上次 测量窗口长度 (s)
-    float Pct_Ctrl = GlobalConfig.Pct_Ctrl; // > Pct_Ctrl 时 进行 PID 控制, 更新最优能耗配置
+    float Th_cover = GlobalConfig.Th_cover; // > Th_cover 时 进行 PID 控制, 更新最优能耗配置
     int BaseUpdateCycle = 2; // 基准更新频次
     // int BaseUpdateCycle = GlobalConfig.BaseUpdateCycle; // 基准更新频次
     int NumOptConfig = GlobalConfig.NumOptConfig; // 确定稳定所需的最近最优配置数量
@@ -1387,7 +1387,7 @@ void *AdaptiveWindowEnergyOptimization(void *arg)
         prevMatchedExeTimePct = MatchedExeTimePct;
 
         prevMeasureWindowDuration = MeasureWindowDuration;
-        if (CoveredExeTimePct < Pct_Ctrl || MatchedExeTimePct < Pct_Ctrl // 当覆盖度 或 匹配度都不足时, 增大测量区间时长
+        if (CoveredExeTimePct < Th_cover || MatchedExeTimePct < Th_cover // 当覆盖度 或 匹配度都不足时, 增大测量区间时长
             || std::abs(PerfIndex) > 0.04 // 当性能指标不为 0 时增大测量区间时长
             || std::abs(ExeIndex) > 0.08 || std::abs(GapIndex) > 0.25
             || (BaseData.avgGPUUtil > 70 && BaseData.avgMemUtil > 50 && std::abs(GapIndex) > 0.05)
@@ -1428,7 +1428,7 @@ void *AdaptiveWindowEnergyOptimization(void *arg)
     } while (!GlobalConfig.terminateThread 
         && global_measure_count < 5
         && (
-        (CoveredExeTimePct < Pct_Ctrl || MatchedExeTimePct < Pct_Ctrl)
+        (CoveredExeTimePct < Th_cover || MatchedExeTimePct < Th_cover)
         || std::abs(PerfIndex) > 0.04 // 0.015 // 默认配置下性能损失指标接近 0%, 才停止数据库初始化
         || std::abs(ExeIndex) > 0.08 || std::abs(GapIndex) > 0.15
         // || global_measure_count < 2
@@ -1530,8 +1530,8 @@ void *AdaptiveWindowEnergyOptimization(void *arg)
 
         // 通过 衰减系数 来控制数据库更新
         if ((ctrl_count != 0 && ctrl_count%BaseUpdateCycle == 0)
-            || CoveredExeTimePct < Pct_Ctrl 
-            || MatchedExeTimePct < Pct_Ctrl 
+            || CoveredExeTimePct < Th_cover 
+            || MatchedExeTimePct < Th_cover 
             || UnMatchedStreamExeTimePct > 0.1
             || base_data_updated == false
         ) {
@@ -1624,7 +1624,7 @@ void *AdaptiveWindowEnergyOptimization(void *arg)
         deltaExeTimePct = std::abs(BaseData.avgExeTimePct - vecMeasureData[IndexBase].avgExeTimePct);
         MFGPOEOOutStream << "deltaExeTimePct: " << std::fixed << std::setprecision(2) << deltaExeTimePct * 100 << " %" << std::endl;
 
-        if (MatchedExeTimePct >= 0.75 * Pct_Ctrl) {
+        if (MatchedExeTimePct >= 0.75 * Th_cover) {
             
             // 进行 PID 控制, 更新最优能耗配置
             // 更新控制目标
@@ -1851,7 +1851,7 @@ void *PredictPerformance(void *arg)
     // float MeasureWindowDuration = 4.0;
     float MeasureWindowDuration = GlobalConfig.MeasureWindowDuration; // 测量窗口长度 (s)
     float prevMeasureWindowDuration = MeasureWindowDuration; // 上次 测量窗口长度 (s)
-    float Pct_Ctrl = GlobalConfig.Pct_Ctrl; // > Pct_Ctrl 时 进行 PID 控制, 更新最优能耗配置
+    float Th_cover = GlobalConfig.Th_cover; // > Th_cover 时 进行 PID 控制, 更新最优能耗配置
     int BaseUpdateCycle = 2; // 基准更新频次
     // int BaseUpdateCycle = GlobalConfig.BaseUpdateCycle; // 基准更新频次
     int NumOptConfig = GlobalConfig.NumOptConfig; // 确定稳定所需的最近最优配置数量
@@ -1962,7 +1962,7 @@ void *PredictPerformance(void *arg)
         CHECK_TERMINATION_BREAK;
 
         prevMeasureWindowDuration = MeasureWindowDuration;
-        if (CoveredExeTimePct < Pct_Ctrl || MatchedExeTimePct < Pct_Ctrl // 当覆盖度 或 匹配度都不足时, 增大测量区间时长
+        if (CoveredExeTimePct < Th_cover || MatchedExeTimePct < Th_cover // 当覆盖度 或 匹配度都不足时, 增大测量区间时长
             || std::abs(PerfIndex) > 0.04 // 当性能指标不为 0 时增大测量区间时长
             || std::abs(ExeIndex) > 0.08 || std::abs(GapIndex) > 0.25
             || (BaseData.avgGPUUtil > 70 && BaseData.avgMemUtil > 50 && std::abs(GapIndex) > 0.05)
@@ -2003,7 +2003,7 @@ void *PredictPerformance(void *arg)
     } while (!GlobalConfig.terminateThread 
         && global_measure_count < 5
         && (
-        (CoveredExeTimePct < Pct_Ctrl || MatchedExeTimePct < Pct_Ctrl)
+        (CoveredExeTimePct < Th_cover || MatchedExeTimePct < Th_cover)
         || std::abs(PerfIndex) > 0.04 // 0.015 // 默认配置下性能损失指标接近 0%, 才停止数据库初始化
         || std::abs(ExeIndex) > 0.08 || std::abs(GapIndex) > 0.15
         // || global_measure_count < 2
@@ -2057,8 +2057,8 @@ void *PredictPerformance(void *arg)
         // if (predict_count != 0 && predict_count % BaseUpdateCycle == 0) {
         // if (predict_count != 0) {
         if ((predict_count != 0 && predict_count%BaseUpdateCycle == 0)
-            || CoveredExeTimePct < Pct_Ctrl 
-            || MatchedExeTimePct < Pct_Ctrl 
+            || CoveredExeTimePct < Th_cover 
+            || MatchedExeTimePct < Th_cover 
             || UnMatchedStreamExeTimePct > 0.1
         ) {
             MFGPOEOOutStream << "\nmeasureBaseData..." << std::endl;
@@ -2161,7 +2161,7 @@ void *PredictPerformance(void *arg)
         MFGPOEOOutStream << "deltaExeTimePct: " << std::fixed << std::setprecision(2) << deltaExeTimePct * 100 << " %" << std::endl;
 
         // 如果匹配度满足阈值
-        if (MatchedExeTimePct >= Pct_Ctrl || predict_count >=3) 
+        if (MatchedExeTimePct >= Th_cover || predict_count >=3) 
         {
             // 打时间戳: 预测完成
             // gettimeofday(&TimeVal, NULL);
