@@ -624,25 +624,26 @@ double AnalysisKernelData(
     // 计算目标函数值
     double PwrRel = CtrlData.avgPower / BaseData.avgPower;
     if (OptObj == OPTIMIZATION_OBJECTIVE::ENERGY) {
-        CtrlData.Obj = PwrRel / (PerfIndex+1);
+        // PerfIndex 表示应用运行时间增长百分比, PerfIndex+1 即可表示归一化的应用运行时间, 再乘归一化的功率即可得到归一化的能耗
+        CtrlData.Obj = PwrRel * (PerfIndex+1);
         // if (PerfLossConstraint >= 0.0 && PerfIndex > PerfLossConstraint)
         // {
         //     CtrlData.Obj += 1; // 性能损失超过阈值, 增大目标函数, 作为惩罚
         // }
     } else if (OptObj == OPTIMIZATION_OBJECTIVE::EDP) {
-        CtrlData.Obj = PwrRel / ((PerfIndex+1)*(PerfIndex+1));
+        CtrlData.Obj = PwrRel * ((PerfIndex+1)*(PerfIndex+1));
         // if (PerfLossConstraint >= 0.0 && PerfIndex > PerfLossConstraint)
         // {
         //     CtrlData.Obj += 1; // 性能损失超过阈值, 增大目标函数, 作为惩罚
         // }
     } else if (OptObj == OPTIMIZATION_OBJECTIVE::ED2P) {
-        CtrlData.Obj = PwrRel / ((PerfIndex+1)*(PerfIndex+1)*(PerfIndex+1));
+        CtrlData.Obj = PwrRel * ((PerfIndex+1)*(PerfIndex+1)*(PerfIndex+1));
         // if (PerfLossConstraint >= 0.0 && PerfIndex > PerfLossConstraint)
         // {
         //     CtrlData.Obj += 1; // 性能损失超过阈值, 增大目标函数, 作为惩罚
         // }
     } else {
-        CtrlData.Obj = PwrRel / (PerfIndex+1);
+        CtrlData.Obj = PwrRel * (PerfIndex+1);
         // if (PerfLossConstraint >= 0.0 && PerfIndex > PerfLossConstraint)
         // {
         //     CtrlData.Obj += 1; // 性能损失超过阈值, 增大目标函数, 作为惩罚
