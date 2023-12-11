@@ -82,7 +82,7 @@ sudo test.sh
 If you use MF-GPOEO in your research, please cite us as follows:
 
    Wang F, Hao M, Zhang W, et al. Model-Free GPU Online Energy Optimization[J]. IEEE Transactions on Sustainable Computing, 2023.
-   https://github.com/ruixueqingyang/mf-GPOEO
+   https://github.com/ruixueqingyang/MF-GPOEO
 
 BibTex:
 
