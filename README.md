@@ -1,6 +1,8 @@
 # MF-GPOEO
 
-**The corresponding paper has been already in submission.**
+**MF-GPOEO is a model-free online energy optimization framework / tool.**
+
+
 
 `./Src` is the source code of our work.
 
@@ -74,4 +76,22 @@ Get the measurement tool (`PerfMeasure.bin`).
 The `test.sh` is an example.
 ```shell
 sudo test.sh
+```
+
+## Citation
+If you use MF-GPOEO in your research, please cite us as follows:
+
+   Wang F, Zhang W, Lai S, et al. Dynamic GPU energy optimization for machine learning training workloads[J]. IEEE Transactions on Parallel and Distributed Systems, 2021, 33(11): 2943-2954.
+   https://github.com/ruixueqingyang/GPOEO
+
+BibTex:
+
+```
+@article{wang2023model,
+  title={Model-Free GPU Online Energy Optimization},
+  author={Wang, Farui and Hao, Meng and Zhang, Weizhe and Wang, Zheng},
+  journal={IEEE Transactions on Sustainable Computing},
+  year={2023},
+  publisher={IEEE}
+}
 ```
